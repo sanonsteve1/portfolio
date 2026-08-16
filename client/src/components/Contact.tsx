@@ -18,18 +18,44 @@ const DETAILS = [
   },
 ];
 
+const SCRIPT_URL = import.meta.env.VITE_GOOGLE_SCRIPT_URL as string | undefined;
+
 export function Contact() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [sending, setSending] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) {
       toast.error("Merci de remplir tous les champs.");
       return;
     }
-    const subject = encodeURIComponent(`Contact — ${form.name}`);
-    const body = encodeURIComponent(`${form.message}\n\n${form.name}\n${form.email}`);
-    window.location.href = `mailto:sanonsteve1@gmail.com?subject=${subject}&body=${body}`;
+
+    if (!SCRIPT_URL) {
+      const subject = encodeURIComponent(`Contact — ${form.name}`);
+      const body = encodeURIComponent(`${form.message}\n\n${form.name}\n${form.email}`);
+      window.location.href = `mailto:sanonsteve1@gmail.com?subject=${subject}&body=${body}`;
+      return;
+    }
+
+    setSending(true);
+    try {
+      await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        }),
+      });
+      toast.success("Message envoyé. Je vous réponds sous 24 h.");
+      setForm({ name: "", email: "", message: "" });
+    } catch {
+      toast.error("L’envoi a échoué. Réessayez ou écrivez-moi directement.");
+    } finally {
+      setSending(false);
+    }
   };
 
   const fieldClass =
@@ -151,9 +177,10 @@ export function Contact() {
             />
             <button
               type="submit"
-              className="btn-fill btn-fill-solid relative mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg border-2 border-signal bg-signal px-6 text-base font-semibold text-on-signal transition-[color,transform] duration-200 hover:text-signal active:scale-[0.96]"
+              disabled={sending}
+              className="btn-fill btn-fill-solid relative mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg border-2 border-signal bg-signal px-6 text-base font-semibold text-on-signal transition-[color,transform] duration-200 hover:text-signal active:scale-[0.96] disabled:pointer-events-none disabled:opacity-60"
             >
-              Envoyer
+              {sending ? "Envoi…" : "Envoyer"}
             </button>
           </form>
         </div>
