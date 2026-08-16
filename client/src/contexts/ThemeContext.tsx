@@ -22,9 +22,12 @@ export function ThemeProvider({
   switchable = false,
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
-    if (switchable) {
+    if (typeof window === "undefined") return defaultTheme;
+    try {
       const stored = localStorage.getItem("theme");
-      return (stored as Theme) || defaultTheme;
+      if (stored === "light" || stored === "dark") return stored;
+    } catch {
+      /* ignore */
     }
     return defaultTheme;
   });

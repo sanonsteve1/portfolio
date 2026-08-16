@@ -1,114 +1,191 @@
-// Direction artistique : Cartographie d’impact - Hero asymétrique avec illustration de réseau, coordonnées et double appel à l’action.
-import { ArrowRight, Download, MapPin, Layers, Cpu, Code2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useEffect, useState } from "react";
+import { Mail, Phone } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
+import { useCube } from "@/components/CubeScene";
+import { easeOut, stagger } from "@/lib/motion";
+
+const HERO_IMG = "/hero-developer.png?v=2";
+
+const ROLES = [
+  "Full-Stack",
+  "Web & Mobile",
+  "IoT",
+  "SIG",
+  "Architecture & intégration",
+];
+
+const METIERS = [
+  "Électrification",
+  "Pharmacie",
+  "e-Visa",
+  "Banque",
+  "Eau",
+  "Smart Home",
+];
+
+const fade: Variants = {
+  hidden: { opacity: 0, y: 12, filter: "blur(4px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.5, ease: easeOut },
+  },
+};
+
+function useTypedRole(active: boolean, reduce: boolean | null) {
+  const [index, setIndex] = useState(0);
+  const [text, setText] = useState("");
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (!active) return;
+
+    if (reduce) {
+      const id = window.setInterval(() => setIndex((i) => (i + 1) % ROLES.length), 2600);
+      return () => window.clearInterval(id);
+    }
+
+    const word = ROLES[index];
+    if (!deleting && text === word) {
+      const pause = window.setTimeout(() => setDeleting(true), 1500);
+      return () => window.clearTimeout(pause);
+    }
+    if (deleting && text.length === 0) {
+      setDeleting(false);
+      setIndex((i) => (i + 1) % ROLES.length);
+      return;
+    }
+
+    const delay = deleting ? 36 : 68;
+    const tick = window.setTimeout(() => {
+      setText(word.slice(0, text.length + (deleting ? -1 : 1)));
+    }, delay);
+    return () => window.clearTimeout(tick);
+  }, [active, deleting, index, reduce, text]);
+
+  return reduce ? ROLES[index] : text;
+}
 
 export function Hero() {
+  const { face, setFace } = useCube();
+  const reduce = useReducedMotion();
+  const typed = useTypedRole(face === "home", reduce);
+
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-topo-grid">
-      {/* Halo lumineux décoratif subtil */}
-      <div className="absolute top-1/4 right-10 w-96 h-96 bg-[#167A68]/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 left-10 w-80 h-80 bg-[#D9775A]/5 rounded-full blur-3xl pointer-events-none" />
+    <div className="relative min-h-full">
+      <div className="home-slash pointer-events-none absolute top-[72px] right-0 bottom-0 hidden w-[42%] overflow-hidden bg-signal xl:w-[48%] lg:block">
+        <img
+          src={HERO_IMG}
+          alt="Illustration d’un développeur full-stack"
+          className="absolute inset-0 h-full w-full object-cover object-[58%_center]"
+        />
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          
-          {/* Colonne de gauche : Texte et positionnement */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left">
-            
-            {/* Badge de statut cartographique */}
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#E6F2EF] border border-[#167A68]/20 text-[#167A68] text-xs font-mono mb-6">
-              <span className="w-2 h-2 rounded-full bg-[#167A68] animate-pulse" />
-              <span>Disponible pour missions internationales & consulting IT</span>
-            </div>
+      <div className="face-shell relative z-10 justify-center">
+        <div className="grid w-full items-center gap-6 lg:h-full lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-8">
+          <img
+            src={HERO_IMG}
+            alt=""
+            className="h-44 w-full rounded-2xl object-cover object-[58%_center] outline outline-1 -outline-offset-1 outline-ink/10 sm:h-56 lg:hidden"
+          />
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-display font-bold text-[#1E2229] tracking-tight leading-[1.1] mb-6">
-              Concevoir l’infrastructure <span className="text-[#167A68]">numérique & géospatiale</span> de l’Afrique.
-            </h1>
+          <motion.div initial={reduce ? false : "hidden"} animate="visible" variants={stagger} className="max-w-2xl">
+            <motion.h1
+              variants={fade}
+              className="mb-2 text-[1.85rem] font-bold leading-[1.12] text-ink sm:mb-3 sm:text-4xl lg:text-[3.4rem]"
+            >
+              Bonjour, je suis <span className="text-signal">Steve Sanon</span>
+            </motion.h1>
 
-            <p className="text-lg sm:text-xl text-[#4A5568] max-w-2xl mb-8 leading-relaxed font-normal">
-              Ingénieur Logiciel et Consultant IT, je traduis des problématiques complexes en solutions logicielles robustes — du développement Full-Stack (Java, Spring Boot, Angular, Flutter) aux Systèmes d’Information Géographique (SIG) et architectures IoT.
-            </p>
+            <motion.h2 variants={fade} className="mb-2 text-base font-semibold text-ink sm:mb-3 sm:text-xl lg:text-2xl">
+              Ingénieur informatique / Consultant IT
+            </motion.h2>
 
-            {/* Boutons d'action principaux */}
-            <div className="flex flex-wrap gap-4 w-full sm:w-auto">
-              <a
-                href="#projets"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-white bg-[#167A68] hover:bg-[#105D4F] font-medium shadow-sm transition-all hover:translate-y-[-1px]"
+            <motion.p
+              variants={fade}
+              className="mb-4 min-h-[1.75rem] text-base font-medium text-signal sm:mb-5 sm:text-lg lg:text-xl"
+              aria-live="polite"
+            >
+              {reduce ? (
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={typed}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.25, ease: easeOut }}
+                    className="inline-block"
+                  >
+                    {typed}
+                  </motion.span>
+                </AnimatePresence>
+              ) : (
+                <>
+                  {typed}
+                  <span className="caret-blink ml-0.5 inline-block h-[1.05em] w-[2px] translate-y-[2px] bg-signal align-middle" />
+                </>
+              )}
+            </motion.p>
+
+            <motion.div variants={fade} className="mb-4 flex flex-wrap gap-2 sm:mb-5 sm:gap-2.5">
+              {METIERS.map((metier) => (
+                <span
+                  key={metier}
+                  className="rounded-full border border-signal/40 bg-signal/10 px-2.5 py-1 text-[10px] font-semibold tracking-wide text-signal uppercase sm:px-3.5 sm:py-1.5 sm:text-sm"
+                >
+                  {metier}
+                </span>
+              ))}
+            </motion.div>
+
+            <motion.p variants={fade} className="mb-5 text-sm leading-relaxed text-ink/85 sm:mb-7 sm:text-base lg:text-lg">
+              Diplômé en Génie Logiciel &amp; Systèmes d’Information, avec plus de 3 ans d’expérience dans la conception,
+              le développement et la mise en œuvre de solutions numériques en Afrique.
+            </motion.p>
+
+            <motion.div variants={fade} className="mb-5 flex flex-col gap-3 sm:mb-7 sm:flex-row sm:flex-wrap sm:gap-4">
+              <button
+                type="button"
+                onClick={() => setFace("projects")}
+                className="btn-fill btn-fill-solid inline-flex min-h-12 w-full items-center justify-center rounded-lg border-2 border-signal bg-signal px-6 text-base font-semibold text-on-signal transition-[color,transform] duration-200 hover:text-signal active:scale-[0.96] sm:w-auto sm:min-w-[10rem]"
               >
-                <span>Explorer les projets</span>
-                <ArrowRight className="w-4 h-4" />
+                Mes projets
+              </button>
+              <a
+                href="/CV_Steve_Sanon_ETC_2026.docx"
+                download
+                className="btn-fill btn-fill-ghost inline-flex min-h-12 w-full items-center justify-center rounded-lg border-2 border-signal bg-transparent px-6 text-base font-semibold text-signal transition-[color,transform] duration-200 hover:text-on-signal active:scale-[0.96] sm:w-auto sm:min-w-[10rem]"
+              >
+                Télécharger le CV
+              </a>
+            </motion.div>
+
+            <motion.div variants={fade} className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-2">
+              <a
+                href="mailto:sanonsteve1@gmail.com"
+                className="inline-flex min-h-10 items-center gap-2.5 text-sm text-ink transition-colors duration-200 hover:text-signal sm:text-base"
+              >
+                <span className="sci-btn relative z-0 flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-signal text-signal">
+                  <Mail className="h-4 w-4" />
+                </span>
+                <span className="break-all">sanonsteve1@gmail.com</span>
               </a>
               <a
-                href="#contact"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-[#1E2229] bg-white border border-[#E2E8F0] hover:bg-slate-50 font-medium shadow-2xs transition-all hover:border-[#167A68]/40"
+                href="tel:+22674064010"
+                className="inline-flex min-h-10 items-center gap-2.5 text-sm text-ink transition-colors duration-200 hover:text-signal sm:text-base"
               >
-                <span>Me contacter</span>
+                <span className="sci-btn relative z-0 flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-signal text-signal">
+                  <Phone className="h-4 w-4" />
+                </span>
+                <span className="tabular-nums">+226 74 06 40 10</span>
               </a>
-            </div>
+            </motion.div>
+          </motion.div>
 
-            {/* Métriques / Piliers clés en bas */}
-            <div className="grid grid-cols-3 gap-6 mt-12 pt-8 border-t border-[#E2E8F0] w-full">
-              <div>
-                <div className="font-display font-bold text-2xl sm:text-3xl text-[#1E2229]">3+</div>
-                <div className="text-xs sm:text-sm text-[#4A5568] mt-0.5">Années d'expérience</div>
-              </div>
-              <div>
-                <div className="font-display font-bold text-2xl sm:text-3xl text-[#167A68]">SIG & IoT</div>
-                <div className="text-xs sm:text-sm text-[#4A5568] mt-0.5">Spécialité technique</div>
-              </div>
-              <div>
-                <div className="font-display font-bold text-2xl sm:text-3xl text-[#1E2229]">CI / BF / BJ</div>
-                <div className="text-xs sm:text-sm text-[#4A5568] mt-0.5">Projets internationaux</div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Colonne de droite : Visuel de carte / infrastructure */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative rounded-2xl overflow-hidden border border-[#E2E8F0] shadow-xl bg-white p-2">
-              <div className="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs flex items-center gap-2 font-mono text-xs text-[#1E2229]">
-                <MapPin className="w-3.5 h-3.5 text-[#167A68]" />
-                <span>Base : Ouagadougou / Missions Afrique de l'Ouest</span>
-              </div>
-              
-              <div className="aspect-[4/3] rounded-xl overflow-hidden bg-slate-900 relative">
-                <img 
-                  src="/manus-storage/steve-sanon-hero-map_617a2365.png" 
-                  alt="Cartographie et infrastructure numérique" 
-                  className="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
-                
-                {/* Étiquette flottante de stack */}
-                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-xs font-mono">
-                  <span className="bg-black/60 backdrop-blur-md px-2.5 py-1 rounded border border-white/10 flex items-center gap-1.5">
-                    <Code2 className="w-3.5 h-3.5 text-[#167A68]" /> Spring Boot • Angular • Flutter • ArcGIS
-                  </span>
-                  <span className="bg-[#167A68] text-white px-2 py-1 rounded font-bold">
-                    ACTIF
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Élément décoratif d'annotation */}
-            <div className="absolute -bottom-6 -left-6 bg-white border border-[#E2E8F0] shadow-lg rounded-xl p-4 hidden sm:block max-w-xs">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#E6F2EF] text-[#167A68] flex items-center justify-center font-bold text-xs">
-                  SIG
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-[#1E2229]">Modélisation de réseaux</div>
-                  <div className="text-[11px] text-[#4A5568]">SONABEL • ArcGIS Utility Network</div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
+          <div className="hidden h-full lg:block" aria-hidden="true" />
         </div>
       </div>
-    </section>
+    </div>
   );
 }

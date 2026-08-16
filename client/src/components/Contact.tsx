@@ -1,156 +1,181 @@
-// Direction artistique : Cartographie d’impact - Section de contact et conversion professionnelle.
-import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle2, Linkedin, Github } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { FileDown, Mail, MapPin, Phone } from "lucide-react";
+import { toast } from "sonner";
+
+const DETAILS = [
+  {
+    href: "mailto:sanonsteve1@gmail.com",
+    icon: Mail,
+    label: "E-mail",
+    value: "sanonsteve1@gmail.com",
+  },
+  {
+    href: "tel:+22674064010",
+    icon: Phone,
+    label: "Téléphone",
+    value: "+226 74 06 40 10",
+  },
+];
 
 export function Contact() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [submitted, setSubmitted] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      toast.error('Veuillez remplir tous les champs du formulaire.');
+    if (!form.name || !form.email || !form.message) {
+      toast.error("Merci de remplir tous les champs.");
       return;
     }
-    setSubmitted(true);
-    toast.success('Message envoyé avec succès ! Steve vous répondra rapidement.');
+    const subject = encodeURIComponent(`Contact — ${form.name}`);
+    const body = encodeURIComponent(`${form.message}\n\n${form.name}\n${form.email}`);
+    window.location.href = `mailto:sanonsteve1@gmail.com?subject=${subject}&body=${body}`;
   };
 
+  const fieldClass =
+    "w-full rounded-lg border-2 border-signal/35 bg-void/55 px-4 py-3.5 text-base text-ink outline-none transition-[border-color] duration-200 placeholder:text-ink/40 focus:border-signal";
+
   return (
-    <section id="contact" className="py-24 bg-white border-t border-[#E2E8F0]">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          
-          {/* Colonne de gauche : Coordonnées et message d’invitation */}
-          <div className="lg:col-span-5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E6F2EF] text-[#167A68] text-xs font-mono mb-4">
-              <span>CONTACT & COLLABORATION</span>
-            </div>
-            
-            <h2 className="text-3xl sm:text-4xl font-display font-bold text-[#1E2229] tracking-tight mb-6">
-              Discutons de votre prochain projet numérique ou SIG.
-            </h2>
+    <div className="relative min-h-full">
+      <div className="contact-grid pointer-events-none absolute inset-0 opacity-40" aria-hidden="true" />
 
-            <p className="text-base text-[#4A5568] leading-relaxed mb-8">
-              Vous avez un projet de développement logiciel, d’intégration SIG ou d’architecture IoT en Afrique de l’Ouest ou à l’international ? Je suis à votre écoute pour échanger sur vos besoins.
-            </p>
-
-            <div className="space-y-6">
-              <a 
-                href="mailto:sanonsteve1@gmail.com" 
-                className="flex items-center gap-4 p-4 rounded-xl bg-[#FBFBFA] border border-[#E2E8F0] hover:border-[#167A68] transition-colors group"
-              >
-                <div className="w-12 h-12 rounded-lg bg-[#E6F2EF] text-[#167A68] flex items-center justify-center group-hover:bg-[#167A68] group-hover:text-white transition-colors">
-                  <Mail className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-mono text-[#4A5568]">Courriel direct</div>
-                  <div className="text-sm font-display font-bold text-[#1E2229]">sanonsteve1@gmail.com</div>
-                </div>
-              </a>
-
-              <a 
-                href="tel:+22674064010" 
-                className="flex items-center gap-4 p-4 rounded-xl bg-[#FBFBFA] border border-[#E2E8F0] hover:border-[#167A68] transition-colors group"
-              >
-                <div className="w-12 h-12 rounded-lg bg-[#E6F2EF] text-[#167A68] flex items-center justify-center group-hover:bg-[#167A68] group-hover:text-white transition-colors">
-                  <Phone className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-mono text-[#4A5568]">Téléphone & WhatsApp</div>
-                  <div className="text-sm font-display font-bold text-[#1E2229]">+226 74 06 40 10</div>
-                </div>
-              </a>
-
-              <div className="flex items-center gap-4 p-4 rounded-xl bg-[#FBFBFA] border border-[#E2E8F0]">
-                <div className="w-12 h-12 rounded-lg bg-[#E6F2EF] text-[#167A68] flex items-center justify-center">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-mono text-[#4A5568]">Localisation</div>
-                  <div className="text-sm font-display font-bold text-[#1E2229]">Ouagadougou, Burkina Faso (Mobile)</div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-          {/* Colonne de droite : Formulaire de contact */}
-          <div className="lg:col-span-7 bg-[#FBFBFA] p-8 sm:p-10 rounded-3xl border border-[#E2E8F0] shadow-xs">
-            {submitted ? (
-              <div className="text-center py-12">
-                <div className="w-16 h-16 bg-[#167A68] text-white rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle2 className="w-8 h-8" />
-                </div>
-                <h3 className="text-2xl font-display font-bold text-[#1E2229] mb-3">Message bien transmis !</h3>
-                <p className="text-sm text-[#4A5568] max-w-md mx-auto mb-6">
-                  Merci pour votre intérêt. Steve Sanon a bien reçu votre demande et vous répondra dans les plus brefs délais à l'adresse indiquée.
-                </p>
-                <Button 
-                  onClick={() => { setSubmitted(false); setFormData({ name: '', email: '', message: '' }); }}
-                  variant="outline"
-                  className="border-[#167A68] text-[#167A68] hover:bg-[#E6F2EF]"
-                >
-                  Envoyer un autre message
-                </Button>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <h3 className="text-xl font-display font-bold text-[#1E2229] mb-2">Envoyez un message direct</h3>
-                  <p className="text-sm text-[#4A5568]">Remplissez ce formulaire pour planifier un échange ou proposer une opportunité.</p>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-[#4A5568] mb-2">Votre nom complet</label>
-                  <input 
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="Ex. Jean Dupont"
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-[#E2E8F0] text-[#1E2229] text-sm focus:outline-none focus:ring-2 focus:ring-[#167A68]/20 focus:border-[#167A68]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-[#4A5568] mb-2">Votre adresse e-mail</label>
-                  <input 
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    placeholder="Ex. jean.dupont@entreprise.com"
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-[#E2E8F0] text-[#1E2229] text-sm focus:outline-none focus:ring-2 focus:ring-[#167A68]/20 focus:border-[#167A68]"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-mono uppercase tracking-wider text-[#4A5568] mb-2">Votre message ou description de projet</label>
-                  <textarea 
-                    rows={4}
-                    value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Décrivez brièvement vos besoins (développement web, SIG, mission de conseil...)"
-                    className="w-full px-4 py-3 rounded-xl bg-white border border-[#E2E8F0] text-[#1E2229] text-sm focus:outline-none focus:ring-2 focus:ring-[#167A68]/20 focus:border-[#167A68]"
-                  />
-                </div>
-
-                <Button 
-                  type="submit"
-                  className="w-full py-4 bg-[#167A68] hover:bg-[#105D4F] text-white font-medium rounded-xl shadow-sm transition-all flex items-center justify-center gap-2"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>Envoyer le message</span>
-                </Button>
-              </form>
-            )}
-          </div>
-
+      <div className="face-shell relative">
+        <div className="mb-4 flex shrink-0 flex-wrap items-end justify-between gap-3">
+          <h2 className="heading-rule text-2xl font-bold text-balance text-ink sm:text-3xl lg:text-4xl">Contact</h2>
+          <p className="flex items-center gap-2 text-xs font-semibold tracking-[0.16em] text-signal uppercase">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-60 motion-reduce:animate-none" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
+            </span>
+            Disponible
+          </p>
         </div>
 
+        <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:gap-10 lg:overflow-hidden">
+          <div className="flex min-h-0 flex-col">
+            <h3 className="mb-2 text-xl font-semibold text-balance text-ink sm:text-2xl lg:text-3xl">Lançons le projet</h3>
+            <p className="mb-5 max-w-md text-pretty text-sm leading-relaxed text-ink/75 sm:text-base">
+              Missions en Afrique de l’Ouest et à l’international — Web, mobile, IoT et SIG, de l’analyse à la livraison.
+            </p>
+
+            <div className="flex flex-col gap-3 lg:min-h-0 lg:flex-1 lg:justify-evenly">
+              {DETAILS.map((item) => (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  className="group flex min-h-14 items-center gap-3 rounded-2xl bg-panel px-3 py-3 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.45),0_0_0_1px_var(--hairline)] transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_12px_28px_-12px_rgba(0,171,240,0.25),0_0_0_1px_var(--signal)] active:scale-[0.96] sm:min-h-[4.5rem] sm:gap-4 sm:px-4"
+                >
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border-2 border-signal text-signal sm:h-12 sm:w-12">
+                    <item.icon className="h-5 w-5" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[11px] font-semibold tracking-[0.16em] text-ink/50 uppercase">
+                      {item.label}
+                    </span>
+                    <span className="block truncate text-sm font-medium text-ink group-hover:text-signal sm:text-base">
+                      {item.value}
+                    </span>
+                  </span>
+                </a>
+              ))}
+
+              <div className="flex min-h-14 items-center gap-3 rounded-2xl bg-panel px-3 py-3 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.45),0_0_0_1px_var(--hairline)] sm:min-h-[4.5rem] sm:gap-4 sm:px-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border-2 border-signal text-signal sm:h-12 sm:w-12">
+                  <MapPin className="h-5 w-5" />
+                </span>
+                <span className="min-w-0">
+                  <span className="block text-[11px] font-semibold tracking-[0.16em] text-ink/50 uppercase">
+                    Localisation
+                  </span>
+                  <span className="block text-sm font-medium text-ink sm:text-base">Ouagadougou, Burkina Faso</span>
+                  <span className="mt-0.5 block font-mono text-[11px] tabular-nums tracking-wide text-signal/80">
+                    12.3714° N · 1.5197° W
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            <a
+              href="/CV_Steve_Sanon_ETC_2026.docx"
+              download
+              className="btn-fill btn-fill-ghost mt-4 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-signal px-5 text-base font-semibold text-signal transition-[color,transform] duration-200 hover:text-on-signal active:scale-[0.96]"
+            >
+              <FileDown className="h-4 w-4" />
+              Télécharger le CV
+            </a>
+          </div>
+
+          <form
+            onSubmit={onSubmit}
+            className="relative flex min-h-[22rem] flex-col overflow-hidden rounded-[1.75rem] bg-panel p-4 shadow-[0_16px_40px_-20px_rgba(0,0,0,0.55),0_0_0_1px_var(--hairline)] sm:min-h-[26rem] sm:p-5 lg:min-h-0 lg:flex-1"
+          >
+            <ContactRadar />
+            <div className="relative mb-4 flex items-end justify-between gap-3">
+              <p className="text-sm font-semibold tracking-[0.16em] text-signal uppercase">Écrire un message</p>
+              <span className="hidden text-[11px] tracking-wide text-ink/40 sm:inline">Réponse sous 24 h</span>
+            </div>
+            <div className="relative grid gap-3 sm:grid-cols-2">
+              <label className="sr-only" htmlFor="contact-name">
+                Nom
+              </label>
+              <input
+                id="contact-name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Nom"
+                autoComplete="name"
+                className={fieldClass}
+              />
+              <label className="sr-only" htmlFor="contact-email">
+                E-mail
+              </label>
+              <input
+                id="contact-email"
+                type="email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                placeholder="E-mail"
+                autoComplete="email"
+                className={fieldClass}
+              />
+            </div>
+            <label className="sr-only" htmlFor="contact-message">
+              Votre besoin
+            </label>
+            <textarea
+              id="contact-message"
+              value={form.message}
+              onChange={(e) => setForm({ ...form, message: e.target.value })}
+              placeholder="Votre besoin"
+              className={`${fieldClass} relative mt-3 min-h-28 flex-1 resize-none`}
+            />
+            <button
+              type="submit"
+              className="btn-fill btn-fill-solid relative mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-lg border-2 border-signal bg-signal px-6 text-base font-semibold text-on-signal transition-[color,transform] duration-200 hover:text-signal active:scale-[0.96]"
+            >
+              Envoyer
+            </button>
+          </form>
+        </div>
       </div>
-    </section>
+    </div>
+  );
+}
+
+function ContactRadar() {
+  return (
+    <svg
+      viewBox="0 0 220 220"
+      className="pointer-events-none absolute -right-8 -top-10 h-44 w-44 text-signal opacity-[0.22]"
+      aria-hidden="true"
+    >
+      <circle cx="110" cy="110" r="38" fill="none" stroke="currentColor" strokeWidth="1" />
+      <circle cx="110" cy="110" r="68" fill="none" stroke="currentColor" strokeWidth="1" className="ring-breathe" />
+      <circle cx="110" cy="110" r="96" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+      <g className="orbit-slow" style={{ transformOrigin: "110px 110px" }}>
+        <circle cx="110" cy="110" r="68" fill="none" stroke="currentColor" strokeDasharray="3 12" />
+        <circle cx="178" cy="110" r="3.5" fill="currentColor" />
+      </g>
+      <circle cx="110" cy="110" r="3" fill="currentColor" />
+    </svg>
   );
 }

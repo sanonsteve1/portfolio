@@ -1,26 +1,36 @@
-// Direction artistique : Cartographie d’impact - Page d’accueil principale du portfolio de Steve Sanon.
-import { Navbar } from '@/components/Navbar';
-import { Hero } from '@/components/Hero';
-import { Expertise } from '@/components/Expertise';
-import { Projects } from '@/components/Projects';
-import { Experience } from '@/components/Experience';
-import { Education } from '@/components/Education';
-import { Contact } from '@/components/Contact';
-import { Footer } from '@/components/Footer';
+import { Navbar } from "@/components/Navbar";
+import { Hero } from "@/components/Hero";
+import { Projects } from "@/components/Projects";
+import { Expertise } from "@/components/Expertise";
+import { Experience } from "@/components/Experience";
+import { Contact } from "@/components/Contact";
+import { Footer } from "@/components/Footer";
+import { CubeProvider, CubeScene, CubeFacePanel } from "@/components/CubeScene";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-[#FBFBFA] text-[#1E2229]">
-      <Navbar />
-      <main className="flex-grow">
-        <Hero />
-        <Expertise />
-        <Projects />
-        <Experience />
-        <Education />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+    <CubeProvider>
+      <div className="h-dvh overflow-hidden bg-void text-ink">
+        <Navbar />
+        <CubeScene>
+          <CubeFacePanel side="home">
+            <Hero />
+          </CubeFacePanel>
+          <CubeFacePanel side="about">
+            <Expertise />
+          </CubeFacePanel>
+          <CubeFacePanel side="projects">
+            <Projects />
+          </CubeFacePanel>
+          <CubeFacePanel side="path">
+            <Experience />
+          </CubeFacePanel>
+          <CubeFacePanel side="contact">
+            <Contact />
+          </CubeFacePanel>
+        </CubeScene>
+        <Footer />
+      </div>
+    </CubeProvider>
   );
 }
