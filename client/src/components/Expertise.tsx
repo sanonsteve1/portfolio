@@ -43,8 +43,8 @@ export function Expertise() {
           <h3 className="mb-3 text-xl font-semibold text-ink sm:text-2xl lg:text-3xl">Ingénieur informatique / Consultant IT</h3>
           <div className="space-y-3 text-sm leading-relaxed text-ink/80 sm:text-base">
             <p>
-              Ingénieur logiciel et consultant IT, diplômé en Génie Logiciel &amp; Systèmes d’Information, avec plus de 3
-              ans d’expérience professionnelle dans la conception, le développement et la mise en œuvre de solutions
+              Ingénieur logiciel et consultant IT, diplômé en Génie Logiciel &amp; Systèmes d’Information, avec plusieurs
+              années d’expériences professionnelles dans la conception, le développement et la mise en œuvre de solutions
               numériques en Afrique.
             </p>
             <p>

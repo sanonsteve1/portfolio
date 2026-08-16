@@ -141,7 +141,7 @@ export function Hero() {
             </motion.div>
 
             <motion.p variants={fade} className="mb-5 text-sm leading-relaxed text-ink/85 sm:mb-7 sm:text-base lg:text-lg">
-              Diplômé en Génie Logiciel &amp; Systèmes d’Information, avec plus de 3 ans d’expérience dans la conception,
+              Diplômé en Génie Logiciel &amp; Systèmes d’Information, avec plusieurs années d’expériences dans la conception,
               le développement et la mise en œuvre de solutions numériques en Afrique.
             </motion.p>
 
