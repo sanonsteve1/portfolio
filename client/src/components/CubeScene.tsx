@@ -175,11 +175,13 @@ export function CubeFacePanel({
   children: ReactNode;
 }) {
   const { face } = useCube();
+  const active = face === side;
   return (
     <section
       data-side={side}
-      className={cn("cube-face", face === side && "is-active", className)}
-      aria-hidden={face !== side}
+      className={cn("cube-face", active && "is-active", className)}
+      aria-hidden={active ? undefined : true}
+      inert={active ? undefined : true}
     >
       {children}
     </section>

@@ -59,7 +59,7 @@ export function Contact() {
   };
 
   const fieldClass =
-    "w-full rounded-lg border-2 border-signal/35 bg-void/55 px-4 py-3.5 text-base text-ink outline-none transition-[border-color] duration-200 placeholder:text-ink/40 focus:border-signal";
+    "relative z-10 w-full rounded-lg border-2 border-signal/35 bg-void/55 px-4 py-3.5 text-base text-ink outline-none transition-[border-color] duration-200 placeholder:text-ink/40 focus:border-signal [touch-action:manipulation]";
 
   return (
     <div className="relative min-h-full">
@@ -133,7 +133,7 @@ export function Contact() {
 
           <form
             onSubmit={onSubmit}
-            className="relative flex min-h-[22rem] flex-col overflow-hidden rounded-[1.75rem] bg-panel p-4 shadow-[0_16px_40px_-20px_rgba(0,0,0,0.55),0_0_0_1px_var(--hairline)] sm:min-h-[26rem] sm:p-5 lg:min-h-0 lg:flex-1"
+            className="relative z-10 flex min-h-[22rem] flex-col overflow-hidden rounded-[1.75rem] bg-panel p-4 shadow-[0_16px_40px_-20px_rgba(0,0,0,0.55),0_0_0_1px_var(--hairline)] sm:min-h-[26rem] sm:p-5 lg:min-h-0 lg:flex-1"
           >
             <ContactRadar />
             <div className="relative mb-4 flex items-end justify-between gap-3">

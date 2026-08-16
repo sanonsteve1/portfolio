@@ -382,6 +382,18 @@
   .cube-face[data-side="contact"] {
     transform: rotateX(90deg) translateZ(var(--cube-zy));
   }
+  /* La rotation X casse le focus et la saisie : face Contact à plat. */
+  .cube[data-face="contact"] {
+    transform: none !important;
+    transform-style: flat;
+  }
+  .cube[data-face="contact"] .cube-face {
+    transform: none !important;
+  }
+  .cube[data-face="contact"] .cube-face:not(.is-active) {
+    visibility: hidden;
+    pointer-events: none;
+  }
   .cube-face > * {
     height: 100%;
   }
