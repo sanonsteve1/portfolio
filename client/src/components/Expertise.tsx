@@ -1,3 +1,5 @@
+import { asset } from "@/lib/asset";
+
 const SKILLS = [
   { title: "SIG · ArcGIS, QGIS, Utility Network", value: 95 },
   { title: "Java · Spring Boot · Angular", value: 92 },
@@ -28,7 +30,7 @@ export function Expertise() {
       <div className="grid min-h-0 flex-1 gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch lg:gap-8 lg:overflow-hidden">
         <div className="flex min-h-0 flex-col">
           <img
-            src="/africa-map.png"
+            src={asset("africa-map.png")}
             alt="Carte de l’Afrique : Burkina Faso, Côte d’Ivoire, Bénin et Tunisie mis en évidence"
             className="h-48 w-full rounded-2xl object-cover object-center outline outline-1 -outline-offset-1 outline-ink/10 sm:h-64 lg:h-full lg:min-h-0 lg:flex-1"
           />

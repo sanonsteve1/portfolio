@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FileDown, Mail, MapPin, Phone } from "lucide-react";
 import { toast } from "sonner";
+import { asset } from "@/lib/asset";
 
 const DETAILS = [
   {
@@ -95,7 +96,7 @@ export function Contact() {
             </div>
 
             <a
-              href="/CV_Steve_Sanon_ETC_2026.docx"
+              href={asset("CV_Steve_Sanon_ETC_2026.docx")}
               download
               className="btn-fill btn-fill-ghost mt-4 inline-flex min-h-12 items-center justify-center gap-2 rounded-lg border-2 border-signal px-5 text-base font-semibold text-signal transition-[color,transform] duration-200 hover:text-on-signal active:scale-[0.96]"
             >

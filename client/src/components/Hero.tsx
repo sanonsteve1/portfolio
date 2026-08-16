@@ -3,8 +3,9 @@ import { Mail, Phone } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion, type Variants } from "framer-motion";
 import { useCube } from "@/components/CubeScene";
 import { easeOut, stagger } from "@/lib/motion";
+import { asset } from "@/lib/asset";
 
-const HERO_IMG = "/hero-developer.png?v=2";
+const HERO_IMG = asset("hero-developer.png?v=2");
 
 const ROLES = [
   "Full-Stack",
@@ -153,7 +154,7 @@ export function Hero() {
                 Mes projets
               </button>
               <a
-                href="/CV_Steve_Sanon_ETC_2026.docx"
+                href={asset("CV_Steve_Sanon_ETC_2026.docx")}
                 download
                 className="btn-fill btn-fill-ghost inline-flex min-h-12 w-full items-center justify-center rounded-lg border-2 border-signal bg-transparent px-6 text-base font-semibold text-signal transition-[color,transform] duration-200 hover:text-on-signal active:scale-[0.96] sm:w-auto sm:min-w-[10rem]"
               >

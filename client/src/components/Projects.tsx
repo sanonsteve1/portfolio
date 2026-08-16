@@ -1,42 +1,43 @@
 import { ArrowUpRight } from "lucide-react";
 import { useCube } from "@/components/CubeScene";
+import { asset } from "@/lib/asset";
 
 const PROJECTS = [
   {
     title: "SIG Électrification",
     subtitle: "EBURTIS · Bénin · suivi des travaux et activités terrain",
     tag: "SIG",
-    image: "/projects/electrification.png",
+    image: asset("projects/electrification.png"),
   },
   {
     title: "Utility Network SONABEL",
     subtitle: "PDEC · Burkina Faso · ArcGIS Utility Network & open source",
     tag: "SIG",
-    image: "/projects/sonabel.png",
+    image: asset("projects/sonabel.png"),
   },
   {
     title: "Officines pharmaceutiques",
     subtitle: "Côte d’Ivoire · géoréférencement · Spring Boot & Angular",
     tag: "Web",
-    image: "/projects/officines.png",
+    image: asset("projects/officines.png"),
   },
   {
     title: "Plateforme e-Visa",
     subtitle: "Côte d’Ivoire · administration publique",
     tag: "Web",
-    image: "/projects/evisa.png",
+    image: asset("projects/evisa.png"),
   },
   {
     title: "Rapprochement bancaire",
     subtitle: "Côte d’Ivoire & Burkina Faso · encaissements eau et banques",
     tag: "Fintech",
-    image: "/projects/banque.png",
+    image: asset("projects/banque.png"),
   },
   {
     title: "Maison intelligente",
     subtitle: "ERITECH · Tunisie · capteurs IoT",
     tag: "IoT",
-    image: "/projects/iot.png",
+    image: asset("projects/iot.png"),
   },
 ];
 

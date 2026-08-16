@@ -3,6 +3,7 @@ import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCube, type CubeFace } from "@/components/CubeScene";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { asset } from "@/lib/asset";
 
 const LINKS: { name: string; face: CubeFace }[] = [
   { name: "Accueil", face: "home" },
@@ -53,7 +54,7 @@ export function Navbar() {
             </button>
           ))}
           <a
-            href="/CV_Steve_Sanon_ETC_2026.docx"
+            href={asset("CV_Steve_Sanon_ETC_2026.docx")}
             download
             className="ml-2 inline-flex min-h-10 items-center rounded-lg border-2 border-signal px-3 text-sm font-semibold text-signal transition-[color,background-color,transform] duration-200 hover:bg-signal hover:text-on-signal active:scale-[0.96]"
           >
@@ -111,7 +112,7 @@ export function Navbar() {
             </button>
           ))}
           <a
-            href="/CV_Steve_Sanon_ETC_2026.docx"
+            href={asset("CV_Steve_Sanon_ETC_2026.docx")}
             download
             onClick={() => setOpen(false)}
             className="min-h-11 py-2 text-base font-medium text-signal"
